@@ -1,0 +1,87 @@
+.user-dashboard {
+    width: 100%;
+    background-color: rgb(191, 194, 255);
+    height: auto;
+    padding-bottom: 40px;
+}
+
+.logo {
+    padding: 20px 30px;
+}
+
+.logo .navbar-brand {
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--headingColor);
+}
+
+.userDashboard-row {
+    padding: 30px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.12);
+    border-radius: 15px;
+    margin-top: 20px;
+    background-color: #fff;
+}
+
+.sidebar {
+    background-color: #fff;
+}
+
+.sidebar-content {
+    padding: 20px;
+}
+
+.sidebar-header {
+    text-align: center;
+}
+
+.user-image {
+    margin: 0 auto;
+}
+
+.user-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    color: lightgray;
+}
+
+.user-name {
+    padding: 18px 13px;
+}
+
+.user-name,
+h3 {
+    text-align: left;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.sidebar-menu {
+    margin: 20px 0;
+}
+
+.sidebar-menu ul li {
+    padding: 5px 0;
+}
+
+.sidebar-menu ul li .nav-link {
+    color: var(--text-color);
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.SidebarMenuItem {
+    border-bottom: 1px solid lightgray;
+}
+
+.SidebarMenuItem:hover {
+    background-color: #f1f1f1;
+}
+
+.sidebarMenuIcon {
+    width: 25px;
+    height: 25px;
+    margin: 0 7px;
+    color: var(--primary-color);
+}

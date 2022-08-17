@@ -1,0 +1,7 @@
+@import 'user_layout';
+@import 'layout';
+@import 'home';
+@import 'about';
+@import 'contact';
+@import 'dashboard';
+@import 'form';
