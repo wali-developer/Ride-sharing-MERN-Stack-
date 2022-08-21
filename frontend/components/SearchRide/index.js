@@ -4,6 +4,8 @@ import { FaUser } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 import AOS from "aos";
+import API from '../../api';
+import { useRouter } from 'next/router';
 
 const Index = () => {
     const [passengerNeeded, setPassengerNeeded] = useState(0);
@@ -14,12 +16,13 @@ const Index = () => {
         date: "",
     });
     const [publishRides, setPublishRides] = useState([]);
+    const router = useRouter();
 
     const plus = () => {
         setPassengerNeeded(passengerNeeded + 1);
     };
     const minus = () => {
-        setPassengerNeeded(passengerNeeded - 1);
+        passengerNeeded > 1 && setPassengerNeeded(passengerNeeded - 1);
     };
 
     // show dropdown content
@@ -28,33 +31,28 @@ const Index = () => {
     };
 
     // search handler
-    //   const handleSearch = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //       if (
-    //         formData.goingFrom.length > 0 &&
-    //         formData.goingTo.length > 0 &&
-    //         formData.date.length > 0
-    //       ) {
-    //         const { data } = await axios.get("http://localhost:3001/publishride");
-    //         // setPublishRides(data);
-    //         history.push({
-    //           pathname: "/availablerides",
-    //           state: {
-    //             goingFrom: formData.goingFrom,
-    //             goingTo: formData.goingTo,
-    //             date: formData.date,
-    //             passengerNeeded: passengerNeeded,
-    //             data: data,
-    //           },
-    //         });
-    //       } else {
-    //         toast.warn("Please fill all the fields");
-    //       }
-    //     } catch (err) {
-    //       console.log(err);
-    //     }
-    //   };
+    const handleSearch = async (e) => {
+        e.preventDefault();
+        try {
+            if (
+                formData.goingFrom.length > 0 &&
+                formData.goingTo.length > 0 &&
+                formData.date.length > 0
+            ) {
+                const { data } = await API.get('/publishride');
+                const searchRides = data.filter(ride => ride.goingfrom === formData.goingFrom && ride.goingto === formData.goingTo);
+                // console.log(searchRides)
+                router.push({
+                    pathname: "/search/available_rides",
+                    query: searchRides
+                }, '/search/available_rides');
+            } else {
+                toast.warn("Please fill all the fields");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
     const places = [
         {
@@ -84,10 +82,10 @@ const Index = () => {
     ];
 
     return (
-        <section data-aos="fade-right" data-aos-duration="1200">
+        <section data-aos="fade-right" data-aos-duration="1200 search_ride_wrapper">
             <h2>Search for a Ride</h2>
             <form
-            // onSubmit={(e) => handleSearch(e)}
+                onSubmit={(e) => handleSearch(e)}
             >
                 <div className="mb-3">
                     <select
@@ -95,10 +93,10 @@ const Index = () => {
                         className="form-control"
                         name="goingFrom"
                         placeholder="Going from..."
-                    // onChange={(e) => {
-                    //   setFormData({ ...formData, goingFrom: e.target.value });
-                    // }}
-                    // value={formData.goingFrom}
+                        onChange={(e) => {
+                            setFormData({ ...formData, goingFrom: e.target.value });
+                        }}
+                        value={formData.goingFrom}
                     >
                         {places.map((place) => {
                             const { id, location } = place;
@@ -112,10 +110,10 @@ const Index = () => {
                         className="form-control"
                         name="goingTo"
                         placeholder="Going to..."
-                        // onChange={(e) =>
-                        //   setFormData({ ...formData, goingTo: e.target.value })
-                        // }
-                        // value={formData.goingTo}
+                        onChange={(e) =>
+                            setFormData({ ...formData, goingTo: e.target.value })
+                        }
+                        value={formData.goingTo}
                         required
                     >
                         {places.map((place) => {
@@ -129,10 +127,10 @@ const Index = () => {
                         <input
                             type="date"
                             name="date"
-                        //   onChange={(e) =>
-                        //     setFormData({ ...formData, date: e.target.value })
-                        //   }
-                        //   value={formData.date}
+                            onChange={(e) =>
+                                setFormData({ ...formData, date: e.target.value })
+                            }
+                            value={formData.date}
                         />
                     </div>
                     <div className="user" onClick={showDropdown}>

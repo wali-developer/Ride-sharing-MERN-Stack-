@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState } from 'react';
 import Link from 'next/link';
+import { Dropdown, Button } from 'react-bootstrap';
 import { FaUserCircle } from "react-icons/fa";
-import { toast } from "react-toastify";
 import { MdOutlineDashboard } from "react-icons/md";
 import { AiOutlineUser } from "react-icons/ai";
 import { VscGitPullRequest } from "react-icons/vsc";
@@ -11,88 +11,106 @@ import {
     IoCloseOutline,
     IoChatboxOutline,
 } from "react-icons/io5";
-import AOS from "aos";
+import { useRouter } from 'next/router';
 
 const Aside = () => {
-    //   const [userName, setUserName] = useState("");
-    //   useEffect(() => {
-    //     const LoginUser = JSON.parse(localStorage.getItem("user"));
-    //     setUserName(LoginUser.fullName);
-    //   });
-    //   const Logout = () => {
-    //     localStorage.clear();
-    //     window.location.href = "/";
-    //     toast.success("You are successfully logout...", { position: "top-center" });
-    //   };
+    const router = useRouter();
 
-    //   useEffect(() => {
-    //     AOS.init();
-    //     AOS.refresh();
-    //   }, []);
+
+    const projects_items = [
+        {
+            id: 0,
+            name: "ST & IT",
+        },
+        {
+            id: 1,
+            name: "Another Project",
+        },
+        {
+            id: 2,
+            name: "Test",
+        },
+    ];
+    const menu = [
+        {
+            id: 1,
+            name: 'Dashbaord',
+            path: '/user/dashboard',
+            icon: 'MdOutlineDashboard'
+        },
+        {
+            id: 2,
+            name: 'Profile',
+            path: '/user/profile',
+            icon: 'AiOutlineUser'
+        },
+        {
+            id: 3,
+            name: 'Publish Ride',
+            path: '/user/publish_ride',
+            icon: 'IoAddCircleOutline'
+        },
+        {
+            id: 4,
+            name: 'Request for Ride',
+            path: '/user/ride_requests',
+            icon: 'IoCarSportOutline'
+        },
+        {
+            id: 5,
+            name: 'Riders Request',
+            path: '/user/riders_request',
+            icon: 'VscGitPullRequest'
+        },
+        {
+            id: 6,
+            name: 'Messaging',
+            path: '/user/messaging',
+            icon: 'IoChatboxOutline'
+        },
+        {
+            id: 6,
+            name: 'Logout',
+            path: '/user/messaging',
+            icon: 'IoCloseOutline'
+        },
+    ]
     return (
-        <div className="col-md-3 sidebar">
+        <>
             <div
-                className="sidebar-content"
-            // data-aos="fade-right"
-            // data-aos-duration="1200"
+                className="userSidebar"
+            // id={toggle ? "toggle-content" : ""}
             >
-                <div className="sidebar-header">
-                    <div className="user-image">
-                        <FaUserCircle className="user-photo" />
-                    </div>
-                    <div className="user-name">
-                        <h3>Waliullah</h3>
-                    </div>
-                </div>
                 <div className="sidebar-menu">
-                    <ul className="nav nav-tabs flex-column">
-                        <li className="nav-item d-flex align-items-center SidebarMenuItem">
-                            <MdOutlineDashboard className="sidebarMenuIcon" />
-                            <Link href="#" >
-                                <span className="nav-link">Dashboard</span>
-                            </Link>
-                        </li>
-                        <li className="nav-item active d-flex align-items-center SidebarMenuItem">
-                            <AiOutlineUser className="sidebarMenuIcon" />
-                            <Link href="#">
-                                <span className="nav-link">Profile</span>
-                            </Link>
-                        </li>
-                        <li className="nav-item d-flex align-items-center SidebarMenuItem">
-                            <IoAddCircleOutline className="sidebarMenuIcon" />
-                            <Link href="#">
-                                <span className="nav-link"> Publish Ride</span>
-                            </Link>
-                        </li>
-                        <li className="nav-item d-flex align-items-center SidebarMenuItem">
-                            <IoCarSportOutline className="sidebarMenuIcon" />
-                            <Link href="#" >
-                                <span className="nav-link">Request for Ride</span>
-                            </Link>
-                        </li>
-                        <li className="nav-item d-flex align-items-center SidebarMenuItem">
-                            <VscGitPullRequest className="sidebarMenuIcon" />
-                            <Link href="#" >
-                                <span className="nav-link">My Ride Requests</span>
-                            </Link>
-                        </li>
-                        <li className="nav-item d-flex align-items-center SidebarMenuItem">
-                            <IoChatboxOutline className="sidebarMenuIcon" />
-                            <Link href="#">
-                                <span className="nav-link">Messaging</span>
-                            </Link>
-                        </li>
-
-                        <li className="nav-item d-flex align-items-center SidebarMenuItem">
-                            <IoCloseOutline className="sidebarMenuIcon" />
-                            <Link href="#">
-                                <span className="nav-link">Logout</span>
-                            </Link>
-                        </li>
+                    <ul>
+                        {menu.map((item, index) => {
+                            return (
+                                <li
+                                    key={index}>
+                                    <MdOutlineDashboard
+                                        className="sidebarMenuIcon"
+                                        style={{
+                                            color: item.path === router.pathname && '#4f56ff'
+                                        }}
+                                    />
+                                    <Link href={item.path}>
+                                        <span
+                                            className="ms-4"
+                                            style={{
+                                                color: item.path === router.pathname && '#4f56ff'
+                                            }}
+                                        >
+                                            {item.name}
+                                        </span>
+                                    </Link>
+                                </li>
+                            )
+                        }
+                        )}
                     </ul>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

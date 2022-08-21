@@ -33,7 +33,7 @@ const Navbar = () => {
             >
                 <div className="container-fluid">
                     <Link href="/">
-                        <span className="navbar-brand">
+                        <span className="navbar-brand" style={{ cursor: 'pointer' }}>
                             TrustiCar
                         </span>
                     </Link>
@@ -75,7 +75,7 @@ const Navbar = () => {
 
                         {/* {!user ? ( */}
                         <div className="navbarButtons d-flex flex-wrap">
-                            <Link href="/login">
+                            <Link href="/auth/login">
                                 <button
                                     className="btn btn-outline-success login me-2"
                                     type="submit"
@@ -84,7 +84,7 @@ const Navbar = () => {
                                     Login
                                 </button>
                             </Link>
-                            <Link href="/register">
+                            <Link href="/auth/register">
                                 <button
                                     className="btn btn-outline-success register"
                                     type="submit"

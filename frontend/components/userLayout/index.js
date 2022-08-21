@@ -1,15 +1,20 @@
-import React from 'react';
-import Aside from '../../components/userLayout/Aside';
+import React, { useState } from "react";
+import Aside from "./Aside";
+import Header from "./Header";
 
-export default function Index({ children }) {
+const Index = (props) => {
+    const [toggle, setToggle] = useState(false);
     return (
-        <section className="user-dashboard">
-            <div className="container">
-                <div className="row userDashboard-row">
-                    <Aside />
-                    <main className='col-md-3 sidebar'>{children}</main>
-                </div>
-            </div>
+        <section style={{ width: "100%", position: "relative" }}>
+            <Header toggle={toggle} setToggle={setToggle} />
+            <section className="projects-page d-flex flex-row ">
+                <Aside toggle={toggle} setToggle={setToggle} />
+                <main className="px-4 py-4 dashbaord_main">
+                    {props.children}
+                </main>
+            </section>
         </section>
     );
 };
+
+export default Index;

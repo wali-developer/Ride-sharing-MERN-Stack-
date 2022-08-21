@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useRouter } from 'next/router';
 import Layout from '../../../components/layout';
 import Link from 'next/link';
-import axios from "axios";
+import API from "../../../api";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const Register = () => {
-    // const history = useHistory();
+    const router = useRouter();
     const [formData, setFormData] = useState({
         fullName: "",
         userName: "",
@@ -19,14 +21,11 @@ const Register = () => {
         e.preventDefault();
 
         try {
-            const { data } = await axios.post(
-                "http://localhost:3001/user/register",
-                formData
-            );
+            const { data } = await API.post('/user/register', formData);
             if (data === "User has already Register...") {
-                toast.error(data, { position: "top-center" });
+                alert(data, { position: "top-center" });
             } else {
-                toast.success(data);
+                alert(data);
             }
         } catch (err) {
             console.log(err);
@@ -38,7 +37,7 @@ const Register = () => {
             password: "",
             userType: "",
         });
-        history.push("/login");
+        // router.push("/auth/login");
     };
     return (
         <Layout>
@@ -47,7 +46,7 @@ const Register = () => {
                     <div className="Register" data-aos="zoom-in" data-aos-duration="1200">
                         <h2 className="text-center my-5">Register yourself on TrustiCar</h2>
                         <form
-                        // onSubmit={(e) => handleRegister(e)}
+                            onSubmit={(e) => handleRegister(e)}
                         >
                             <div className="mb-4 input-group">
                                 <input
@@ -55,9 +54,9 @@ const Register = () => {
                                     className="form-control"
                                     placeholder="Full Name..."
                                     name="fullName"
-                                // onChange={(event) => {
-                                //     setFormData({ ...formData, fullName: event.target.value });
-                                // }}
+                                    onChange={(event) => {
+                                        setFormData({ ...formData, fullName: event.target.value });
+                                    }}
                                 />
                             </div>
                             <div className="mb-4 input-group">
@@ -66,9 +65,9 @@ const Register = () => {
                                     className="form-control"
                                     placeholder="Username..."
                                     name="username"
-                                // onChange={(event) => {
-                                //     setFormData({ ...formData, userName: event.target.value });
-                                // }}
+                                    onChange={(event) => {
+                                        setFormData({ ...formData, userName: event.target.value });
+                                    }}
                                 />
                             </div>
                             <div className="mb-4 input-group">
@@ -77,9 +76,9 @@ const Register = () => {
                                     className="form-control"
                                     placeholder="Email..."
                                     name="email"
-                                // onChange={(event) => {
-                                //     setFormData({ ...formData, email: event.target.value });
-                                // }}
+                                    onChange={(event) => {
+                                        setFormData({ ...formData, email: event.target.value });
+                                    }}
                                 />
                             </div>
                             <div className="mb-4 input-group">
@@ -88,9 +87,9 @@ const Register = () => {
                                     className="form-control"
                                     placeholder="Password..."
                                     name="password"
-                                // onChange={(event) => {
-                                //     setFormData({ ...formData, password: event.target.value });
-                                // }}
+                                    onChange={(event) => {
+                                        setFormData({ ...formData, password: event.target.value });
+                                    }}
                                 />
                             </div>
                             <label>Select user type</label>
@@ -99,9 +98,9 @@ const Register = () => {
                                 aria-label="Default select example"
                                 placeholder="User type"
                                 name="usertype"
-                            // onChange={(event) => {
-                            //     setFormData({ ...formData, userType: event.target.value });
-                            // }}
+                                onChange={(event) => {
+                                    setFormData({ ...formData, userType: event.target.value });
+                                }}
                             >
                                 <option value="Passenger">Passenger</option>
                                 <option value="Driver">Driver</option>

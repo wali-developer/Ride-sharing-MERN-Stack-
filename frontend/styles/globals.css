@@ -65,6 +65,7 @@ h6,
 a {
     text-decoration: none;
     color: var(--text-color);
+    cursor: pointer;
 }
 
 /* ------------------------------ Responsive media queries ------------------------------ */
