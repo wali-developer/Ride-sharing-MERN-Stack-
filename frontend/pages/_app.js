@@ -1,7 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../styles/globals.css';
 import '../styles/main.scss';
+import 'react-toastify/dist/ReactToastify.css';
 import Script from 'next/script';
+import { ToastContainer } from 'react-toastify'
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -11,6 +13,7 @@ function MyApp({ Component, pageProps }) {
         crossorigin="anonymous"
       ></Script>
       <Component {...pageProps} />
+      <ToastContainer />
     </>
   )
 }

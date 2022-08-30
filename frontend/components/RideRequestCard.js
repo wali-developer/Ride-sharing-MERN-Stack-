@@ -56,7 +56,7 @@ const RideRequestCard = ({
 
     return (
         <>
-            <div className="card text-center my-5">
+            <div className="card text-center mb-4">
                 <div className="card-header" style={{ textAlign: "left" }}>
                     Booking Ride Request from {"Swat"} to {"Kalam"}
                 </div>

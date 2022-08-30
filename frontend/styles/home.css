@@ -48,10 +48,25 @@
 } */
 
 .mainInnerRow .user {
-    padding: 5px 12px;
+    padding: 0 12px;
     background-color: rgb(247, 247, 247);
     border-radius: 5px;
     border: 1px solid lightgray;
+    width: 80px;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainInnerRow .user input {
+    width: 100%;
+    border: none;
+}
+
+.mainInnerRow .user input:focus {
+    border: none;
 }
 
 .dropdownContent {

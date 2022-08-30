@@ -1,10 +1,11 @@
 import React from 'react';
 import UserLayout from '../../../components/userLayout';
+import Messaging from './Messaging';
 
 const Index = () => {
     return (
         <UserLayout>
-            Profile
+            <Messaging />
         </UserLayout>
     )
 }

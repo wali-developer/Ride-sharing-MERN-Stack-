@@ -19,13 +19,12 @@ const Register = () => {
     // handle user registration
     const handleRegister = async (e) => {
         e.preventDefault();
-
         try {
             const { data } = await API.post('/user/register', formData);
             if (data === "User has already Register...") {
                 alert(data, { position: "top-center" });
             } else {
-                alert(data);
+                router.push('/auth/login')
             }
         } catch (err) {
             console.log(err);

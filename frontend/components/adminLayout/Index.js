@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Aside from "./Aside";
-import Header from "./Header";
+import Header from "../userLayout/Header";
 
 const Index = (props) => {
     const [toggle, setToggle] = useState(false);

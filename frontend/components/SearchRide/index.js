@@ -18,13 +18,6 @@ const Index = () => {
     const [publishRides, setPublishRides] = useState([]);
     const router = useRouter();
 
-    const plus = () => {
-        setPassengerNeeded(passengerNeeded + 1);
-    };
-    const minus = () => {
-        passengerNeeded > 1 && setPassengerNeeded(passengerNeeded - 1);
-    };
-
     // show dropdown content
     const showDropdown = () => {
         setShow(!show);
@@ -133,17 +126,11 @@ const Index = () => {
                             value={formData.date}
                         />
                     </div>
-                    <div className="user" onClick={showDropdown}>
+                    <div className="user">
                         <FaUser className="userIcon" />
-                        <span>{passengerNeeded}</span>
+                        {/* <span>{passengerNeeded}</span> */}
+                        <input type="number" placeholder="0" />
                     </div>
-                    {show ? (
-                        <PassengerDetails
-                            plus={plus}
-                            minus={minus}
-                            passengerNeeded={passengerNeeded}
-                        />
-                    ) : null}
                     <div className="searchBtn">
                         <button className="btn btn-outline-success search" type="submit">
                             Search

@@ -13,91 +13,89 @@ import {
 } from "react-icons/io5";
 import { useRouter } from 'next/router';
 
-const Animation = (position) => {
-    return (
-        <div
-            style={{
-                position: 'absolute',
-                top: position,
-                right: "0",
-                transition: 'all 300ms ease-in-out',
-            }}
-        >
-            <img src='/images/animation-icon.svg' alt='Circle' />
-        </div>
-    )
-}
-
 const Aside = () => {
-    const [position, setPosition] = useState(0);
     const router = useRouter();
     const menu = [
         {
             id: 1,
             name: 'Dashbaord',
-            path: '/user/dashboard',
-            icon: '<MdOutlineDashboard'
+            path: '/admin/dashboard',
+            icon: <MdOutlineDashboard
+                className='sidebarMenuIcon'
+            // style={{
+            //     color: item.path === router.pathname && '#4f56ff'
+            // }}
+            />
         },
         {
             id: 2,
             name: 'Profile',
-            path: '/user/profile',
-            icon: 'AiOutlineUser'
+            path: '/admin/profile',
+            icon: <AiOutlineUser
+                className='sidebarMenuIcon'
+            // style={{
+            //     color: item.path === router.pathname && '#4f56ff'
+            // }}
+            />
         },
         {
             id: 3,
-            name: 'Publish Ride',
-            path: '/user/publish_ride',
-            icon: 'IoAddCircleOutline'
+            name: 'Riders',
+            path: '/admin/riders',
+            icon: <IoAddCircleOutline
+                className='sidebarMenuIcon'
+            // style={{
+            //     color: item.path === router.pathname && '#4f56ff'
+            // }}
+            />
         },
         {
             id: 4,
-            name: 'Request for Ride',
-            path: '/user/ride_requests',
-            icon: 'IoCarSportOutline'
+            name: 'Rides',
+            path: '/admin/rides',
+            icon: <IoCarSportOutline
+                className='sidebarMenuIcon'
+            // style={{
+            //     color: item.path === router.pathname && '#4f56ff'
+            // }}
+            />
         },
         {
             id: 5,
-            name: 'Riders Request',
-            path: '/user/riders_request',
-            icon: 'VscGitPullRequest'
-        },
-        {
-            id: 6,
-            name: 'Messaging',
-            path: '/user/messaging',
-            icon: 'IoChatboxOutline'
+            name: 'Drivers',
+            path: '/admin/drivers',
+            icon: <VscGitPullRequest
+                className='sidebarMenuIcon'
+            // style={{
+            //     color: item.path === router.pathname && '#4f56ff'
+            // }}
+            />
         },
         {
             id: 6,
             name: 'Logout',
-            path: '/user/messaging',
-            icon: 'IoCloseOutline'
+            path: '#',
+            icon: <IoCloseOutline
+                className='sidebarMenuIcon'
+            // style={{
+            //     color: item.path === router.pathname && '#4f56ff'
+            // }}
+            />
         },
     ]
-    const handleClick = (index) => {
-        setPosition(index + 15 + 52 + "px")
-    }
     return (
         <>
             <div
                 className="userSidebar"
             // id={toggle ? "toggle-content" : ""}
             >
-                <div className="sidebar-menu" style={{ position: 'relative' }}>
+                <div className="sidebar-menu">
                     <ul>
                         {menu.map((item, index) => {
                             return (
                                 <li
-                                    key={index}
-                                    onClick={() => setPosition(50)}
-                                >
-                                    <MdOutlineDashboard
-                                        className="sidebarMenuIcon"
-                                        style={{
-                                            color: item.path === router.pathname && '#4f56ff'
-                                        }}
-                                    />
+                                    key={index}>
+                                    {item.icon}
                                     <Link href={item.path}>
                                         <span
                                             className="ms-4"
@@ -113,7 +111,6 @@ const Aside = () => {
                         }
                         )}
                     </ul>
-                    {/* <Animation position={position} /> */}
                 </div>
             </div>
         </>

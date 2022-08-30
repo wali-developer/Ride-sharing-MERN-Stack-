@@ -5,8 +5,6 @@ import Link from 'next/link';
 import API from "../../../api";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import AOS from "aos";
-import axios from 'axios';
 
 const Index = () => {
     const [formData, setFormData] = useState({
@@ -23,11 +21,11 @@ const Index = () => {
             if (!data.token && !data.user) {
                 toast.error(data, { position: "top-center" });
             } else {
-                alert(data.token);
+                toast.success('Login Successfull !!!', { position: 'top-right' })
                 localStorage.setItem("authToken", data.token);
                 localStorage.setItem("user", JSON.stringify(data.user));
                 if (data.user.email === "waliullah@trusticar.com") {
-                    router.push("/admin-dashboard");
+                    router.push("/admin/dashboard");
                 } else {
                     router.push("/user/dashboard");
                 }
@@ -36,16 +34,11 @@ const Index = () => {
             console.log(err);
         }
     };
-
-    useEffect(() => {
-        AOS.init();
-        AOS.refresh();
-    }, []);
     return (
         <Layout>
             <section className="formContainer">
                 <div className="container">
-                    <div className="Login" data-aos="flip-right" data-aos-duration="1000">
+                    <div className="Login">
                         <h1>Welcome Back !</h1>
                         <h2 className="text-start my-4">Login to your Account</h2>
                         <form
