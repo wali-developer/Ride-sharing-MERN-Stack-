@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import UserLayout from '../../../components/userLayout';
+import { toast } from "react-toastify";
+import API from '../../../api';
 
-const Index = () => {
+const UserProfileEdit = () => {
     const [user, setUser] = useState({
         id: "",
         fullName: "",
@@ -10,68 +13,84 @@ const Index = () => {
         password: "",
         userType: "",
     });
-    // const history = useHistory();
-    // useEffect(() => {
-    //     const LoginUser = JSON.parse(localStorage.getItem("user"));
-    //     setUser({
-    //         id: LoginUser._id,
-    //         fullName: LoginUser.fullName,
-    //         userName: LoginUser.userName,
-    //         email: LoginUser.email,
-    //         password: LoginUser.password,
-    //         userType: LoginUser.userType,
-    //     });
-    // }, []);
+    const [file, setFile] = useState();
 
-    const handleEdit = (e) => {
+    // update profile Handler
+    const handleUpdate = async (e) => {
         e.preventDefault();
-
-        history.push({
-            pathname: "/user-dashboard/profile/edit/" + user.id,
-            state: { user: user },
-        });
+        try {
+            const { data } = await API.patch(
+                `http://localhost:3001/user/${user.id}`,
+                user
+            );
+            toast.success(data);
+        } catch (err) {
+            console.log(err);
+        }
     };
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        setUser(
+            {
+                ...user,
+                id: user?._id,
+                fullName: user?.fullName,
+                userName: user?.userName,
+                email: user?.email,
+                password: user?.password,
+                userType: user?.userType
+            }
+        )
+    }, [])
     return (
         <UserLayout>
-            <div className="userProfile-main p-5">
-                <div className="">
+            <div className="col-md-9 userProfile-main py-5">
+                <div className="container">
                     <h2>Profile</h2>
-                    <form className="user-Details">
+                    <form
+                        className="user-Details"
+                        onSubmit={(e) => handleUpdate(e)}
+                    >
                         <div className="mb-3">
                             <label className="form-label">Full Name</label>
                             <input
                                 type="text"
+                                name="fullName"
                                 className="form-control"
-                            //   value={user.fullName}
-                            //   onChange={(e) => console.log("input changed...")}
+                                onChange={(e) => setUser({ ...user, fullName: e.target.value })}
+                                value={user.fullName}
                             />
                         </div>
                         <div className="mb-3">
                             <label className="form-label">User Name</label>
                             <input
                                 type="text"
+                                name="userName"
                                 className="form-control"
-                            //   value={user.userName}
-                            //   onChange={(e) => console.log("input changed...")}
+                                onChange={(e) => setUser({ ...user, userName: e.target.value })}
+                                value={user.userName}
                             />
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Email</label>
                             <input
                                 type="email"
+                                name="email"
                                 className="form-control"
-                            //   value={user.email}
-                            //   onChange={(e) => console.log("input changed...")}
+                                onChange={(e) => setUser({ ...user, email: e.target.value })}
+                                value={user.email}
                             />
                         </div>
                         <div className="mb-3">
                             <label className="form-label">Password</label>
                             <input
                                 type="password"
+                                name="password"
                                 className="form-control"
                                 disabled
-                            //   value={user.password}
-                            //   onChange={(e) => console.log("input changed...")}
+                                onChange={(e) => setUser({ ...user, password: e.target.value })}
+                                value={user.password}
                             />
                         </div>
                         <div className="mb-3 mt-4">
@@ -81,19 +100,29 @@ const Index = () => {
                                 aria-label="Default select example"
                                 placeholder="User type"
                                 name="userType"
-                            //   value={user.userType}
-                            //   onChange={(e) => console.log("input changed...")}
+                                onChange={(e) => setUser({ ...user, userType: e.target.value })}
+                                value={user.userType}
                             >
                                 <option value="Passenger">Passenger</option>
                                 <option value="Driver">Driver</option>
                             </select>
                         </div>
-                        <button
-                            className="btn btn-primary"
-                        //   onClick={(e) => handleEdit(e)}
-                        >
-                            Edit Profile
-                        </button>
+
+                        <div className="mb-3">
+                            <label className="form-label" htmlFor="file">
+                                Select Your Image
+                            </label>
+                            <input
+                                type="file"
+                                // name="image"
+                                className="form-control"
+                                onChange={(e) => {
+                                    const [file] = e.target.files[0];
+                                    setFile(e.target.files[0]);
+                                }}
+                            />
+                        </div>
+                        <button className="btn btn-primary">Update Profile</button>
                     </form>
                 </div>
             </div>
@@ -101,4 +130,4 @@ const Index = () => {
     );
 };
 
-export default Index;
+export default UserProfileEdit;

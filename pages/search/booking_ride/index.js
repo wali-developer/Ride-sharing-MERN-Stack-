@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Layout from '../../../../components/layout';
+import Layout from '../../../components/layout';
 import { useRouter } from 'next/router';
 import axios from "axios";
 import Link from 'next/link';
 import { BsArrowLeft } from "react-icons/bs";
 import { toast } from "react-toastify";
-import API from "../../../../api";
-import Modal from '../../../../components/modal'
+import API from "../../../api";
+import Modal from '../../../components/modal'
 
 const Index = () => {
     const router = useRouter();

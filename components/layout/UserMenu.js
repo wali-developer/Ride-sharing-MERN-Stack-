@@ -140,7 +140,7 @@ const UserMenu = ({ user }) => {
           </li>
           <li className="my-2 d-flex align-items-center userMenuRow">
             <IoCarSportOutline className="userMenuIcon" />
-            <Link href="/user/riderequest">
+            <Link href="/user/ride_requests">
               <span className="dropdown-item">
                 Request for a Ride <IoReturnUpForwardOutline className="mx-3" />
               </span>

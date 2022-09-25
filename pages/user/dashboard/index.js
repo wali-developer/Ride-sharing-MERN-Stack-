@@ -8,10 +8,10 @@ import moment from 'moment';
 const Index = () => {
     const [userRides, setUserRides] = useState([]);
     const [requestedRides, setRequestedRides] = useState([]);
-    // const userEmail = user.email;
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
+        // console.log(user)
 
         API.get("/user/user-dashboard", {
             headers: {
@@ -28,11 +28,14 @@ const Index = () => {
             setUserRides(data);
         };
 
-        //     const getRequestRides = async () => {
-        //         const { data } = await axios.get("http://localhost:3001/requestride");
-        //         setRequestedRides(data);
-        //     };
-        //     getRequestRides();
+        const getRequestRides = async () => {
+            const { data } = await API.get("/requestride");
+            // console.log(data);
+            const filterRequestRides = data?.filter(ride => ride?.publisherId === user?._id);
+            setRequestedRides(filterRequestRides);
+        };
+
+        getRequestRides();
         getUserRides();
 
     }, []);
@@ -68,11 +71,23 @@ const Index = () => {
                         )}
                     </div>
                 </div>
-                <div className='row d-flex flex-row p-5'>
-                    <div className='col-12 col-md-6'>
-                        {[0, 1].map((ride, index) => {
+                <h2 className="text-left pt-5">Ride Requests</h2>
+                <div className='row p-5'>
+                    <div className='col-12'>
+                        {requestedRides?.map((ride, index) => {
                             return (
-                                <RideRequestCard key={index} />
+                                <RideRequestCard
+                                    key={index}
+                                    id={ride?._id}
+                                    rideId={ride?.rideId}
+                                    goingfrom={ride?.goingfrom}
+                                    goingto={ride?.goingto}
+                                    rideStatus={ride?.rideStatus}
+                                    requestStatus={ride?.requestStatus}
+                                    date={ride?.bookingDate}
+                                    passenger={ride?.passenger}
+                                    bookerEmail={ride?.bookerEmail}
+                                />
                             );
                         })}
 

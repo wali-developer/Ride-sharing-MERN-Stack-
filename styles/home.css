@@ -15,7 +15,7 @@
 .mainRowCol1 select,
 input[type="date"] {
     border-radius: 5px;
-    height: 50px;
+    height: 42px;
     box-shadow: 0px 1px 7px rgb(0 0 0 / 15%);
     border-radius: 8px;
     border: none;
@@ -60,13 +60,15 @@ input[type="date"] {
     background-color: white;
     border-radius: 5px;
     width: 90px;
-    height: 50px;
+    height: 42px;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     box-shadow: 0px 1px 7px rgb(0 0 0 / 15%);
 }
+
+
 
 .mainInnerRow .user input {
     width: 100%;
@@ -77,9 +79,12 @@ input[type="date"] {
     border: none;
 }
 
-.mainInnerRow .searchBtn {
-    height: 50px !important;
+.mainInnerRow .searchBtn button {
+    height: 42px !important;
     border: none;
+    padding: 0 20px;
+    background-color: var(--primary-color);
+    color: white;
 }
 
 .user_dropdown {
@@ -162,6 +167,7 @@ input[type="date"] {
 .userMenuRow {
     padding: 10px 25px;
     border-bottom: 1px solid lightgray;
+    cursor: pointer;
 }
 
 .userMenuRow:last-child {

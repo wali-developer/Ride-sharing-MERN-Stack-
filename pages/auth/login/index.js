@@ -40,7 +40,7 @@ const Index = () => {
                 <div className="container">
                     <div className="Login">
                         <h1>Welcome Back !</h1>
-                        <h2 className="text-start my-4">Login to your Account</h2>
+                        <h4 className="text-start my-4">Login to your Account</h4>
                         <form
                             onSubmit={(e) => handleLogin(e)}
                         >
@@ -74,7 +74,7 @@ const Index = () => {
                                 <label className="form-check-label">Remember me</label>
                             </div>
                             <Link href="#">
-                                <p className="forgot">Forgot Password</p>
+                                <p className="forgot" style={{ cursor: "pointer" }}>Forgot Password</p>
                             </Link>
 
                             <button type="submit" className="btn btn-primary primaryBtn">

@@ -5,10 +5,11 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import { BsSearch } from "react-icons/bs";
 import RideCard from '../../../components/RideCard';
 
-const Index = () => {
+const Index = ({ availableRides, userFormData }) => {
+    console.log(availableRides, userFormData);
     const router = useRouter();
-    const [availableRides, setAvailableRides] = useState(JSON.parse(router.query.availableRides));
-    const [userFormData, setUserFormData] = useState(JSON.parse(router.query.userFormData))
+    // const [availableRides, setAvailableRides] = useState(JSON.parse(router?.query?.availableRides));
+    // const [userFormData, setUserFormData] = useState(JSON.parse(router?.query?.userFormData))
 
     console.log("Search data", userFormData);
     console.log("Available Rides", availableRides)
@@ -55,7 +56,7 @@ const Index = () => {
                                 <div key={index}>
                                     <RideCard
                                         rideData={ride}
-                                        userFormData={JSON.parse(router.query.userFormData)}
+                                        userFormData={userFormData}
                                     />
                                 </div>
                             );
@@ -68,3 +69,14 @@ const Index = () => {
 }
 
 export default Index;
+
+export const getServerSideProps = (context) => {
+    const availableRides = context?.query?.availableRides;
+    const userFormData = context?.query?.userFormData;
+    return {
+        props: {
+            availableRides: JSON.parse(availableRides),
+            userFormData: JSON.parse(userFormData)
+        }
+    }
+}

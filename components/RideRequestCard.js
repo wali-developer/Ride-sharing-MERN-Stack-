@@ -3,11 +3,18 @@ import React from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import API from "../api";
 
 const RideRequestCard = ({
     id,
+    index,
+    goingfrom,
+    goingto,
+    rideStatus,
     requestStatus,
+    date,
     passenger,
+    bookerEmail,
     rideId,
 }) => {
     const [rejectionMessage, setRejectionMessage] = useState("");
@@ -15,11 +22,11 @@ const RideRequestCard = ({
     // handle approve ride request
     const handleApprove = async () => {
         try {
-            await axios.patch(`http://localhost:3001/publishride/${rideId}`, {
+            await API.patch(`/publishride/${rideId}`, {
                 passenger: passenger - passenger,
             });
-            const { data } = await axios.patch(
-                `http://localhost:3001/requestride/${id}`,
+            const { data } = await API.patch(
+                `/requestride/${id}`,
                 {
                     requestStatus: "Accepted",
                 }
@@ -37,8 +44,8 @@ const RideRequestCard = ({
     // handle disapprove ride request
     const handleDisapprove = async () => {
         try {
-            const { data } = await axios.patch(
-                `http://localhost:3001/requestride/${id}`,
+            const { data } = await API.patch(
+                `/requestride/${id}`,
                 {
                     requestStatus: "Rejected",
                     rejectionReason: rejectionMessage,
@@ -58,20 +65,17 @@ const RideRequestCard = ({
         <>
             <div className="card text-center mb-4">
                 <div className="card-header" style={{ textAlign: "left" }}>
-                    Booking Ride Request from {"Swat"} to {"Kalam"}
+                    Booking Ride Request from {goingfrom} to {goingto}
                 </div>
                 <div className="card-body">
                     <h5 className="card-title">
-                        {"Swat"} <BsArrowRight /> {"Kalam"}
+                        {goingfrom} <BsArrowRight /> {goingto}
                     </h5>
                     <p className="card-text">
-                        User with email <b> {"example@gmail.com"} </b> has requested to book your{" "}
-                        <b>{"Active"}</b> ride with <b>{3}</b> passengers
-                        on {"20 Aug, 2022"}, you can either Approve or
-                        Disapprove
+                        User with email <b> {bookerEmail} </b> has requested to book your ride with <b>{passenger}</b> passengers on {date}, you can either Approve or Disapprove
                     </p>
                     <div className="d-flex justify-content-between">
-                        <button className="btn primaryBtn">
+                        <button className="btn primaryBtn" onClick={handleApprove}>
                             Approve
                         </button>
                         <button
@@ -133,7 +137,7 @@ const RideRequestCard = ({
                         </div>
                     </div>
                 </div>
-                <div className="card-footer text-muted">{"21 Aug, 2022"}</div>
+                <div className="card-footer text-muted">{date}</div>
             </div>
         </>
     );

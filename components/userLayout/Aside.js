@@ -36,7 +36,7 @@ const Aside = () => {
             id: 1,
             name: 'Dashbaord',
             path: '/user/dashboard',
-            icon: '<MdOutlineDashboard'
+            icon: 'MdOutlineDashboard'
         },
         {
             id: 2,
@@ -67,12 +67,6 @@ const Aside = () => {
             name: 'Messaging',
             path: '/user/messaging',
             icon: 'IoChatboxOutline'
-        },
-        {
-            id: 6,
-            name: 'Logout',
-            path: '/user/messaging',
-            icon: 'IoCloseOutline'
         },
     ]
     const handleClick = (index) => {
@@ -114,6 +108,12 @@ const Aside = () => {
                         )}
                     </ul>
                     {/* <Animation position={position} /> */}
+                </div>
+                <div className='' style={{ cursor: 'pointer' }}>
+                    <IoCloseOutline className="sidebarMenuIcon" />
+                    <span className="ms-4">
+                        Logout
+                    </span>
                 </div>
             </div>
         </>
