@@ -100,8 +100,6 @@
   // @include sm-screen() {
   //   top: 150px !important;
   // }
-  position: sticky;
-  top: 0;
   background: #fff;
   width: 250px !important;
   // height: 100vh;
@@ -110,6 +108,8 @@
   z-index: 9;
   transition: all 500ms ease-in-out;
   .sidebar-menu {
+    position: fixed;
+    height: 100vh;
     ul {
       list-style-type: none;
       margin-left: -2rem;
@@ -138,5 +138,6 @@
 .dashbaord_main {
   background-color: #f8f8f8;
   flex: 1;
+  overflow: hidden
 }
   

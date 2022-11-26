@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { GoSearch } from "react-icons/go";
 import Conversation from "./Conversation";
 import Message from "./Message";
-import axios from "axios";
 import { io } from "socket.io-client";
+import API from "../../../api";
 
 const Messaging = () => {
   const [user, setUser] = useState({});
@@ -17,59 +17,59 @@ const Messaging = () => {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
 
-  // useEffect(() => {
-  //   const userData = JSON.parse(localStorage.getItem("user"));
-  //   if (userData) {
-  //     setUser(userData);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData) {
+      setUser(userData);
+    }
+  }, []);
 
-  // useEffect(() => {
-  //   socket.current = io("ws://localhost:8900");
-  //   socket.current.on("getMessage", (data) => {
-  //     setArrivalMessage({
-  //       sender: data.senderId,
-  //       text: data.text,
-  //       date: Date.now(),
-  //     });
-  //   });
-  // }, []);
+  useEffect(() => {
+    socket.current = io("ws://localhost:8900");
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+        date: Date.now(),
+      });
+    });
+  }, []);
 
-  // useEffect(() => {
-  //   arrivalMessage &&
-  //     currentChat?.members.includes(arrivalMessage.sender) &&
-  //     setMessages((prev) => [...prev, arrivalMessage]);
-  // }, [arrivalMessage, currentChat]);
+  useEffect(() => {
+    arrivalMessage &&
+      currentChat?.members.includes(arrivalMessage.sender) &&
+      setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, currentChat]);
 
-  // useEffect(() => {
-  //   socket.current.emit("addUser", user._id);
-  //   socket.current.on("getUsers", (users) => {
-  //     // console.log(users);
-  //     if (users) {
-  //       setOnlineUsers(users);
-  //     }
-  //   });
-  // }, [user]);
+  useEffect(() => {
+    socket.current.emit("addUser", user._id);
+    socket.current.on("getUsers", (users) => {
+      // console.log(users);
+      if (users) {
+        setOnlineUsers(users);
+      }
+    });
+  }, [user]);
 
-  // useEffect(() => {
-  //   const getConversations = async () => {
-  //     const { data } = await axios.get(
-  //       `http://localhost:3001/conversations/${user._id}`
-  //     );
-  //     setConversations(data);
-  //   };
-  //   getConversations();
-  // }, [user]);
+  useEffect(() => {
+    const getConversations = async () => {
+      const { data } = await API.get(
+        `conversations/${user._id}`
+      );
+      setConversations(data);
+    };
+    getConversations();
+  }, [user]);
 
-  // useEffect(() => {
-  //   const getMessages = async () => {
-  //     const { data } = await axios.get(
-  //       `http://localhost:3001/messages/${currentChat?._id}`
-  //     );
-  //     setMessages(data);
-  //   };
-  //   getMessages();
-  // }, [currentChat]);
+  useEffect(() => {
+    const getMessages = async () => {
+      const { data } = await API.get(
+        `messages/${currentChat?._id}`
+      );
+      setMessages(data);
+    };
+    getMessages();
+  }, [currentChat]);
 
   // handle send message
   const handleSendMessage = async (e) => {
@@ -95,8 +95,8 @@ const Messaging = () => {
       });
 
       try {
-        const { data } = await axios.post(
-          "http://localhost:3001/messages",
+        const { data } = await API.post(
+          "messages",
           message
         );
         setMessages([...messages, data]);
@@ -107,15 +107,15 @@ const Messaging = () => {
     }
   };
 
-  // useEffect(() => {
-  //   scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  // }, [messages]);
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <>
-      <div className="userProfile-main messaging">
+      <div className="col-md-9 userProfile-main messaging">
         <div className="row messagingRow">
-          <div className="connectRiders-section col-12 col-md-4">
+          <div className="connectRiders-section col-12 col-md-5">
             <div className="topBar">
               <span className="topBar-heading">Connected Riders</span>
             </div>
@@ -128,77 +128,78 @@ const Messaging = () => {
               />
             </div>
             <div className="connectedRiders">
-              {[0, 1, 2].map((conversation, index) => {
+              {conversations.map((conversation, index) => {
+                console.log("Conversation: ", conversation);
                 return (
                   <div
-                    // onClick={() => {
-                    //   setCurrentChat(conversation);
-                    //   setConnectedRider(
-                    //     JSON.parse(localStorage.getItem("connectRider"))
-                    //   );
-                    // }}
+                    onClick={() => {
+                      setCurrentChat(conversation);
+                      setConnectedRider(
+                        JSON.parse(localStorage.getItem("connectRider"))
+                      );
+                    }}
                     key={index}
                   >
                     <Conversation
-                    // conversation={conversation}
-                    // currentUser={user}
-                    // onlineUsers={onlineUsers}
+                      conversation={conversation}
+                      currentUser={user}
+                      onlineUsers={onlineUsers}
                     />
                   </div>
                 );
               })}
             </div>
           </div>
-          <div className="messagesBody-section col-12 col-md-8">
-            {/* {currentChat ? ( */}
-            <>
-              <div className="topBar">
-                <span className="topBar-heading">
-                  <img
-                    src="/images/user-icon.png"
-                    alt="Rider profile"
-                    className="user-icon img-fluid"
-                  />
-                  {/* Message receiver Name */}
-                  {ConnectedRider.fullName}
-                </span>
-              </div>
-              <div className="messagesContainer">
-                {[0, 1, 2, 4, 5, 6, 7].map((message, index) => {
-                  return (
-                    <div ref={scrollRef} key={index}>
-                      <Message
-                      // message={message}
-                      // ownMessage={message.sender === user._id}
-                      // OwnUser={user}
-                      // ConnectedRider={ConnectedRider}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="newMessage">
-                <textarea
-                  className="form-control"
-                  placeholder="Write a message... "
-                  rows="3"
-                // onChange={(e) => setNewMessage(e.target.value)}
-                // value={newMessage}
-                ></textarea>
-                <button
-                  type="submit"
-                  className="btn primmaryBtn sendMessageBtn my-2"
-                // onClick={(e) => handleSendMessage(e)}
-                >
-                  Send
-                </button>
-              </div>
-            </>
-            {/* ) : (
+          <div className="messagesBody-section col-12 col-md-7">
+            {currentChat ? (
+              <>
+                <div className="topBar">
+                  <span className="topBar-heading">
+                    <img
+                      src="/images/user-icon.png"
+                      alt="Rider profile"
+                      className="user-icon img-fluid"
+                    />
+                    {/* Message receiver Name */}
+                    {ConnectedRider.fullName}
+                  </span>
+                </div>
+                <div className="messagesContainer">
+                  {messages.map((message) => {
+                    return (
+                      <div ref={scrollRef}>
+                        <Message
+                          message={message}
+                          ownMessage={message.sender === user._id}
+                          OwnUser={user}
+                          ConnectedRider={ConnectedRider}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="newMessage">
+                  <textarea
+                    class="form-control"
+                    placeholder="Write a message... "
+                    rows="3"
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    value={newMessage}
+                  ></textarea>
+                  <button
+                    type="submit"
+                    className="btn primmaryBtn sendMessageBtn my-2"
+                    onClick={(e) => handleSendMessage(e)}
+                  >
+                    Send
+                  </button>
+                </div>
+              </>
+            ) : (
               <span className="EmptyConversation">
                 Open connected Riders conversation to start <br /> a chat
               </span>
-            )} */}
+            )}
           </div>
         </div>
       </div>

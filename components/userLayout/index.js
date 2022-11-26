@@ -5,7 +5,7 @@ import Header from "./Header";
 const Index = (props) => {
     const [toggle, setToggle] = useState(false);
     return (
-        <section style={{ width: "100%", position: "relative" }}>
+        <section style={{ width: "100%", position: "relative", overflow: "hidden" }}>
             <Header toggle={toggle} setToggle={setToggle} />
             <section className="projects-page d-flex flex-row">
                 <Aside toggle={toggle} setToggle={setToggle} />

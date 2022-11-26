@@ -1,13 +1,11 @@
 import React from "react";
 import { format } from "timeago.js";
 
-const Message = () => {
+const Message = ({ message, ownMessage, OwnUser, ConnectedRider }) => {
   return (
     <>
       <div className="messagesList">
-        <div
-          className={"singleMessage"}
-        >
+        <div className={ownMessage ? "singleMessage own" : "singleMessage"}>
           <div className="row singleMessageRow d-flex align-items-start">
             <div className="col-2 my-2">
               <img
@@ -18,19 +16,20 @@ const Message = () => {
             </div>
             <div
               className={
-                "message-text col-md-10"
+                !ownMessage
+                  ? "message-text col-md-10 "
+                  : "message-text col-md-10"
               }
-            // id={ownMessage ? "ownMessageText" : ""}
+              id={ownMessage ? "ownMessageText" : ""}
             >
-              <span>Hello</span>
+              <span>{message.text}</span>
             </div>
           </div>
           <div className="messager-details d-flex flex-row justify-content-between">
             <div className="messagerName">
-              {/* {ownMessage ? OwnUser.fullName : ConnectedRider.fullName} */}
-              Hammad Khan
+              {ownMessage ? OwnUser.fullName : ConnectedRider.fullName}
             </div>
-            <div className="messageDate">{"2 days ago"}</div>
+            <div className="messageDate">{format(message.date)}</div>
           </div>
         </div>
       </div>

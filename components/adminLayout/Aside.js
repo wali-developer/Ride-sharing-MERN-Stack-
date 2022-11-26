@@ -15,6 +15,7 @@ import { useRouter } from 'next/router';
 
 const Aside = () => {
     const router = useRouter();
+    const [selectedItem, setSelectedItem] = useState();
     const menu = [
         {
             id: 1,
@@ -22,9 +23,6 @@ const Aside = () => {
             path: '/admin/dashboard',
             icon: <MdOutlineDashboard
                 className='sidebarMenuIcon'
-            // style={{
-            //     color: item.path === router.pathname && '#4f56ff'
-            // }}
             />
         },
         {
@@ -90,6 +88,7 @@ const Aside = () => {
                             return (
                                 <li
                                     key={index}
+                                    onClick={() => setSelectedItem(item)}
                                 >
                                     {item.icon}
                                     <Link href={item.path}>
@@ -109,7 +108,10 @@ const Aside = () => {
                         <li>
                             <VscGitPullRequest
                                 className='sidebarMenuIcon'
-                                onClick={handleLogout}
+                                onClick={() => {
+                                    setSelectedItem(item)
+                                    handleLogout()
+                                }}
                             />
                             <span
                                 className="ms-4"

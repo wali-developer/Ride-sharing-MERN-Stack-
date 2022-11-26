@@ -27,7 +27,7 @@ const PulishRideFormCard = () => {
 
     }, [])
 
-    // hanlde Publish Ride
+    // handle Publish Ride
     const publishRideHandle = async (e) => {
         e.preventDefault();
         setLoading(true);
@@ -93,20 +93,6 @@ const PulishRideFormCard = () => {
                             value={goingto}
                         />
                     </div>
-                    {/* <div className="mb-4 input-group">
-                    <select
-                        type="text"
-                        className="form-control"
-                        placeholder="Select Ride status..."
-                        name="select"
-                        disabled
-                    // onChange={(e) => setStatus(e.target.value)}
-                    // value={status}
-                    >
-                        <option value="Active">Active</option>
-                        <option value="Inactive">Inactive</option>
-                    </select>
-                </div> */}
                     <div className="row">
                         <div className="passenger-needed my-4 col-7">
                             <span className="me-3">Passenger Needed:</span>
@@ -130,10 +116,10 @@ const PulishRideFormCard = () => {
                             />
                         </div>
                     </div>
-                    <label htmlFor="status" className="text-danger
+                    <p htmlFor="status" className="text-danger
                  mt-3 mb-5">
                         The Ride status will be Inactive untill it does not Approve from Admin
-                    </label>
+                    </p>
                     <button type="submit" className="btn btn-primary primaryBtn">
                         Publish Ride
                     </button>

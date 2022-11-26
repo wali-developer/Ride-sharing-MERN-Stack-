@@ -1,27 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Layout from '../../../components/layout';
 import { useRouter } from 'next/router';
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { BsSearch } from "react-icons/bs";
 import RideCard from '../../../components/RideCard';
+import SearchRideContext from "../../../context/state";
 
-const Index = ({ availableRides, userFormData }) => {
-    console.log(availableRides, userFormData);
+const Index = () => {
     const router = useRouter();
-    // const [availableRides, setAvailableRides] = useState(JSON.parse(router?.query?.availableRides));
-    // const [userFormData, setUserFormData] = useState(JSON.parse(router?.query?.userFormData))
 
-    console.log("Search data", userFormData);
-    console.log("Available Rides", availableRides)
-    // useEffect(() => {
-    //     if (!router.isReady) return;
-    //     setAvailableRides(JSON.parse(router.query.availableRides));
-    //     console.log(availableRides);
-    // }, []);
+    const { searchData } = useContext(SearchRideContext);
+    console.log("Search Data after user search : ", searchData)
+
+    const [userFormData, setUserFormData] = useState({});
+    const [availableRidesData, setAvailableRidesData] = useState([]);
+
 
     useEffect(() => {
-        !userFormData && router.push('/search');
-    }, [])
+        searchData?.availableRides?.length < 1 && router.push('/search');
+    }, [searchData])
+
+    useEffect(() => {
+        setUserFormData(searchData?.fieldsData)
+        setAvailableRidesData(searchData?.availableRides)
+    }, [searchData])
 
 
     return (
@@ -49,9 +51,9 @@ const Index = ({ availableRides, userFormData }) => {
                                 {userFormData?.goingFrom} <AiOutlineArrowRight className="arrow" />
                                 {userFormData?.goingTo}
                             </p>
-                            <span> {availableRides?.length} rides available</span>
+                            <span> {availableRidesData?.length} rides available</span>
                         </div>
-                        {availableRides?.map((ride, index) => {
+                        {availableRidesData?.map((ride, index) => {
                             return (
                                 <div key={index}>
                                     <RideCard
@@ -70,13 +72,15 @@ const Index = ({ availableRides, userFormData }) => {
 
 export default Index;
 
-export const getServerSideProps = (context) => {
-    const availableRides = context?.query?.availableRides;
-    const userFormData = context?.query?.userFormData;
-    return {
-        props: {
-            availableRides: JSON.parse(availableRides),
-            userFormData: JSON.parse(userFormData)
-        }
-    }
-}
+// export const getServerSideProps = (context) => {
+//     const availableRides = context?.query?.availableRides;
+//     const userFormData = context?.query?.userFormData;
+//     const form = context?.query?.form;
+//     return {
+//         props: {
+//             availableRides: JSON.parse(availableRides),
+//             userFormData: JSON.parse(userFormData),
+//             form: form
+//         }
+//     }
+// }

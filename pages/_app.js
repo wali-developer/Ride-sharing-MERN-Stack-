@@ -4,17 +4,18 @@ import '../styles/main.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import Script from 'next/script';
 import { ToastContainer } from 'react-toastify'
+import { AppContext } from '../context/state';
 
 function MyApp({ Component, pageProps }) {
   return (
-    <>
+    <AppContext>
       <Script
         src="https://kit.fontawesome.com/8441000675.js"
         crossorigin="anonymous"
       ></Script>
       <Component {...pageProps} />
       <ToastContainer />
-    </>
+    </AppContext>
   )
 }
 

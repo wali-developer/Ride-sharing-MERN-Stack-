@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PassengerDetails from "./PassengerDetails";
 import { FaUser } from "react-icons/fa";
+import { GrDown } from "react-icons/gr";
 import { toast } from "react-toastify";
 import API from '../../api';
 import { useRouter } from 'next/router';
 import Loader from '../../components/CustomeLoader';
+import SearchRideContext from "../../context/state";
 
 const Index = () => {
 
-    const [show, setShow] = useState(false);
+    const { searchData, setSearchData } = useContext(SearchRideContext);
+    console.log("Search Data: ", searchData)
+    // console.log("Context data: ", searchData);
+
     const [rides, setRides] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -23,7 +28,6 @@ const Index = () => {
     // search handler
     const handleSearch = async (e) => {
         e.preventDefault();
-        setLoading(true);
         try {
             if (
                 formData.goingFrom.length > 0 &&
@@ -31,16 +35,17 @@ const Index = () => {
                 formData.date.length > 0 &&
                 formData.passengerNeeded > 0
             ) {
+                setLoading(true);
                 const { data } = await API.get('/publishride');
                 const searchRides = data.filter(ride => ride.goingfrom === formData.goingFrom && ride.goingto === formData.goingTo);
 
-                router.push({
-                    pathname: `/search/available_rides/${[data]}`,
-                    query: {
-                        availableRides: JSON.stringify(searchRides),
-                        userFormData: JSON.stringify(formData)
-                    }
-                }, `/search/available_rides/${[data]}`);
+                setSearchData({
+                    ...searchData,
+                    fieldsData: formData,
+                    availableRides: searchRides
+                })
+
+                router.push(`/search/available_rides`);
                 setLoading(false);
             } else {
                 toast.error("Please fill all the fields");
@@ -86,7 +91,7 @@ const Index = () => {
                 <form
                     onSubmit={(e) => handleSearch(e)}
                 >
-                    <div className="mb-3">
+                    <div className="mb-3 position-relative">
                         <select
                             type="text"
                             className="form-control"
@@ -102,8 +107,9 @@ const Index = () => {
                                 return <option key={id}>{location}</option>;
                             })}
                         </select>
+                        <GrDown style={styles.downIcon} />
                     </div>
-                    <div className="mb-3">
+                    <div className="mb-3 position-relative">
                         <select
                             type="text"
                             className="form-control"
@@ -120,6 +126,7 @@ const Index = () => {
                                 return <option key={id}>{location}</option>;
                             })}
                         </select>
+                        <GrDown style={styles.downIcon} />
                     </div>
                     <div className=" mainInnerRow">
                         <div className="date">
@@ -153,3 +160,9 @@ const Index = () => {
 };
 
 export default Index;
+
+const styles = {
+    downIcon: {
+        position: 'absolute', top: '50%', right: '15px', transform: 'translateY(-50%)'
+    }
+}

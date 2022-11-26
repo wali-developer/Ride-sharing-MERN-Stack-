@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from 'next/link';
 import { Button } from "react-bootstrap";
 
 const Header = ({ toggle, setToggle }) => {
     const [show, setShow] = useState(false);
+    const [loginUser, setLoginUser] = useState([]);
+
+    useEffect(() => {
+        setLoginUser(JSON.parse(localStorage.getItem('user')));
+    }, [])
 
     return (
-        <header className="userHeader">
+        <header className="userHeader" >
             <div className="d-flex flex-row flex-wrap justify-content-between align-items-center header-flex">
                 <button
                     // onClick={() => setToggle(!toggle)}
@@ -28,7 +33,7 @@ const Header = ({ toggle, setToggle }) => {
                     </div>
                     <div className="d-flex flex-row align-content-center">
                         <div className="header-circle ms-4"></div>
-                        <span className="user_name">Wali Ullah</span>
+                        <span className="user_name">{loginUser?.fullName}</span>
                     </div>
                 </div>
             </div>

@@ -47,3 +47,18 @@
 //       text-align: right;
 //     }
 //   }
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+background: var(--primary-color);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background: lightgray;
+}

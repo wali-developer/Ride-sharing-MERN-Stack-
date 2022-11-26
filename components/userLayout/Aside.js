@@ -58,8 +58,8 @@ const Aside = () => {
         },
         {
             id: 5,
-            name: 'Riders Request',
-            path: '/user/riders_request',
+            name: 'My Rides Requests',
+            path: '/user/my_requests',
             icon: 'VscGitPullRequest'
         },
         {
@@ -108,12 +108,12 @@ const Aside = () => {
                         )}
                     </ul>
                     {/* <Animation position={position} /> */}
-                </div>
-                <div className='' style={{ cursor: 'pointer' }}>
-                    <IoCloseOutline className="sidebarMenuIcon" />
-                    <span className="ms-4">
-                        Logout
-                    </span>
+                    <div className='' style={{ cursor: 'pointer' }}>
+                        <IoCloseOutline className="sidebarMenuIcon" />
+                        <span className="ms-4">
+                            Logout
+                        </span>
+                    </div>
                 </div>
             </div>
         </>

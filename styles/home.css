@@ -12,7 +12,7 @@
     padding: 20px 0;
 }
 
-.mainRowCol1 select,
+.search_ride_wrapper select,
 input[type="date"] {
     border-radius: 5px;
     height: 42px;

@@ -105,3 +105,28 @@
         margin-bottom: 20px;
     }
 }
+
+/* Search page */
+.search__page {
+    width: 100%;
+    position: relative;
+    .search_wrapper {
+        width: 650px;
+        max-width: 100%;
+        margin: 120px auto 30px auto;
+        border-radius: 30px;
+        text-align: center;
+        box-shadow: 0px 1px 50px rgb(0 0 0 / 5%);
+        padding: 50px 50px;
+        // position: absolute;
+        // left: 20px;
+        // top: 0;
+        // // transform: translateX(-50%);
+        // background: rgba(255, 255, 255, 0.8);
+        // padding: 30px 50px;
+        // border-radius: 20px;
+        select:focus {
+            box-shadow: 0px 1px 7px rgb(0 0 0 / 15%)
+        }
+    }
+}

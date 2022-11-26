@@ -19,10 +19,7 @@ const UserProfileEdit = () => {
     const handleUpdate = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await API.patch(
-                `http://localhost:3001/user/${user.id}`,
-                user
-            );
+            const { data } = await API.patch(`/user/${user.id}`, user);
             toast.success(data);
         } catch (err) {
             console.log(err);

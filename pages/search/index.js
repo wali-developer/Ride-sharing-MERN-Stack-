@@ -13,13 +13,12 @@ const Index = () => {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <Layout>
-                <section style={{
-                    width: '620px',
-                    maxWidth: '100%',
-                    margin: '50px auto',
-                    textAlign: 'center',
-                }}>
-                    <SearchRide />
+                <section className="search__page">
+                    <div className=" ">
+                        <div className="search_wrapper ">
+                            <SearchRide />
+                        </div>
+                    </div>
                 </section>
             </Layout>
         </>

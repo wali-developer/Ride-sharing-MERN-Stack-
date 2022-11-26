@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { GrLocation } from "react-icons/gr";
 import { FaUserCircle } from "react-icons/fa";
 import { BsArrowDown } from "react-icons/bs";
@@ -9,11 +9,16 @@ import Modal from '../components/modal';
 import Button from 'react-bootstrap/Button';
 import API from "../api";
 import CustomLoader from '../components/CustomeLoader';
+import SearchRideContext from "../context/state";
 
 const SearchedCard = ({
     rideData,
     userFormData
 }) => {
+
+    const { searchData, setSearchData } = useContext(SearchRideContext);
+    console.log("Search Data : ", searchData)
+
     const router = useRouter();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
     const [ridePublisher, setRidePublisher] = useState();
@@ -46,6 +51,7 @@ const SearchedCard = ({
         };
     };
 
+    // Booking Ride...
     const BookRide = async () => {
         setOpenModal(false)
         if (rideData?.goingfrom === userFormData?.goingFrom && rideData?.goingto === userFormData?.goingTo) {
@@ -68,13 +74,16 @@ const SearchedCard = ({
                 toast(data);
                 setTimeout(() => {
                     router.push('/user/messaging');
-                }, 3000);
+                }, 8000);
                 // setLoader(false)
             } catch (error) {
                 // setLoader(true)
-                console.log(data)
+                console.log(error)
             }
             setLoader(false)
+            setSearchData({})
+            console.log(searchData);
+
         }
     }
 
@@ -84,22 +93,6 @@ const SearchedCard = ({
             toast.info("Please Login to Book a Ride", { position: "top-center" });
             router.push("/auth/login");
         } else {
-            // router.push({
-            //     pathname: "/search/available_rides/booking_ride",
-            //     query: {
-            //         rideDetails: {
-            //             goingfrom,
-            //             goingto,
-            //             publisherName,
-            //             date,
-            //             publisherEmail,
-            //             rideStatus,
-            //             userFormData
-            //             // publishRideId,
-            //             // formData,
-            //         }
-            //     },
-            // });
             setOpenModal(true)
         }
     };
@@ -109,7 +102,7 @@ const SearchedCard = ({
             {loader && (
                 <CustomLoader />
             )}
-            <Modal show={openModal} setShow={setOpenModal}>
+            <Modal show={openModal} setShow={setOpenModal} className="">
                 <h5 className="text-center" style={{ fontFamily: 'Poppins' }}>Are you sure to book this ride</h5>
                 <div className="d-flex justify-content-between mt-5">
                     <Button variant="secondary" onClick={() => setOpenModal(false)}>Close</Button>

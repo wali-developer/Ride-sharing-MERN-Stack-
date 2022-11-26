@@ -6,7 +6,7 @@ const Index = () => {
     return (
         <UserLayout>
             <div className="userProfile-main">
-                <div className="container">
+                <div className="container mt-5" style={{ maxWidth: '600px', margin: '0 auto' }}>
                     <SearchRide />
                 </div>
             </div>

@@ -1,38 +1,35 @@
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import API from "../api";
+import Modal from '../components/modal';
+import { Button } from "react-bootstrap";
 
 const RideRequestCard = ({
-    id,
-    index,
-    goingfrom,
-    goingto,
-    rideStatus,
-    requestStatus,
-    date,
-    passenger,
-    bookerEmail,
-    rideId,
+    ride,
+    getRequestRides
 }) => {
     const [rejectionMessage, setRejectionMessage] = useState("");
+    const [openModal, setOpenModal] = useState(false);
+    console.log(ride)
 
     // handle approve ride request
     const handleApprove = async () => {
         try {
-            await API.patch(`/publishride/${rideId}`, {
+            await API.patch(`/publishride/${ride?.rideId}`, {
                 passenger: passenger - passenger,
             });
             const { data } = await API.patch(
-                `/requestride/${id}`,
+                `/requestride/${ride?._id}`,
                 {
                     requestStatus: "Accepted",
                 }
             );
             if (data) {
                 toast.success("You have accepted the ride request");
+                console.log("Accepted ride: ", data)
             } else {
                 toast(data);
             }
@@ -45,14 +42,15 @@ const RideRequestCard = ({
     const handleDisapprove = async () => {
         try {
             const { data } = await API.patch(
-                `/requestride/${id}`,
+                `/requestride/${ride?._id}`,
                 {
                     requestStatus: "Rejected",
                     rejectionReason: rejectionMessage,
                 }
             );
             if (data) {
-                alert("You have rejected the ride request");
+                toast("You have rejected the ride request");
+                console.log(data);
             } else {
                 alert(data);
             }
@@ -61,84 +59,76 @@ const RideRequestCard = ({
         }
     };
 
+    useEffect(() => {
+        getRequestRides();
+    }, [handleApprove, handleDisapprove])
+
     return (
         <>
-            <div className="card text-center mb-4">
-                <div className="card-header" style={{ textAlign: "left" }}>
-                    Booking Ride Request from {goingfrom} to {goingto}
+            {ride?.requestStatus === "Pending" && (
+                <div className="card text-center mb-4">
+                    <div className="card-header" style={{ textAlign: "left" }}>
+                        Booking Ride Request from {ride?.goingfrom} to {ride?.goingto}
+                    </div>
+                    <div className="card-body">
+                        <h5 className="card-title">
+                            {ride?.goingfrom} <BsArrowRight /> {ride?.goingto}
+                        </h5>
+                        <p className="card-text">
+                            User with email <b> {ride?.bookerEmail} </b> has requested to book your ride with <b>{ride?.passenger}</b> passengers on {ride?.bookingDate}, you can either Approve or Disapprove
+                        </p>
+                        <div className="d-flex justify-content-between">
+                            <button className="btn primaryBtn" onClick={handleApprove}>
+                                Approve
+                            </button>
+                            <button
+                                type="button"
+                                href="/"
+                                className="btn primaryBtn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#exampleModal"
+                                onClick={() => setOpenModal(true)}
+                            >
+                                Disapprove
+                            </button>
+                        </div>
+
+                    </div>
+                    <div className="card-footer text-muted">{ride?.bookingDate}</div>
                 </div>
-                <div className="card-body">
-                    <h5 className="card-title">
-                        {goingfrom} <BsArrowRight /> {goingto}
-                    </h5>
-                    <p className="card-text">
-                        User with email <b> {bookerEmail} </b> has requested to book your ride with <b>{passenger}</b> passengers on {date}, you can either Approve or Disapprove
-                    </p>
-                    <div className="d-flex justify-content-between">
-                        <button className="btn primaryBtn" onClick={handleApprove}>
-                            Approve
+
+            )}
+            {/* Rejection modal */}
+            <Modal show={openModal} setShow={setOpenModal} className="">
+                <div className="">
+                    <h5 className="text-center" style={{ fontFamily: 'Poppins' }}>Rejection Reason</h5>
+                    <div className="modal-body">
+                        <textarea
+                            className="form-control"
+                            rows="3"
+                            placeholder="Tell the Request sender why you are rejected his ride request "
+                            onChange={(e) => setRejectionMessage(e.target.value)}
+                            value={rejectionMessage}
+                        ></textarea>
+                    </div>
+                    <div className="modal-footer">
+                        <button
+                            type="button"
+                            className="btn btn-secondary"
+                            onClick={() => setOpenModal(false)}
+                        >
+                            Close
                         </button>
                         <button
                             type="button"
-                            href="/"
                             className="btn primaryBtn"
-                            data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"
+                            onClick={handleDisapprove}
                         >
-                            Disapprove
+                            Dissapprove Request
                         </button>
                     </div>
-                    {/* Rejection modal */}
-                    <div
-                        className="modal fade"
-                        id="exampleModal"
-                        tabIndex="-1"
-                        aria-labelledby="exampleModalLabel"
-                        aria-hidden="true"
-                    >
-                        <div className="modal-dialog">
-                            <div className="modal-content">
-                                <div className="modal-header">
-                                    <h5 className="modal-title" id="exampleModalLabel">
-                                        Rejection Reason
-                                    </h5>
-                                    <button
-                                        type="button"
-                                        className="btn-close"
-                                        data-bs-dismiss="modal"
-                                        aria-label="Close"
-                                    ></button>
-                                </div>
-                                <div className="modal-body">
-                                    <textarea
-                                        className="form-control"
-                                        rows="3"
-                                        placeholder="Tell the Request sender why you are rejected his ride request "
-                                    //   onChange={(e) => setRejectionMessage(e.target.value)}
-                                    //   value={rejectionMessage}
-                                    ></textarea>
-                                </div>
-                                <div className="modal-footer">
-                                    <button
-                                        type="button"
-                                        className="btn btn-secondary"
-                                        data-bs-dismiss="modal"
-                                    >
-                                        Close
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="btn primaryBtn"
-                                    >
-                                        Dissapprove Request
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-                <div className="card-footer text-muted">{date}</div>
-            </div>
+            </Modal>
         </>
     );
 };
