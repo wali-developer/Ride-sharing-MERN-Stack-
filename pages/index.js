@@ -12,20 +12,18 @@ import SinglePopularRide from '../components/SinglePopularRide'
 import { toast } from 'react-toastify';
 
 export default function HomePage() {
-  useEffect(() => {
-    AOS.init();
-    AOS.refresh();
-  }, []);
+
   const [services, setServices] = useState(servicesApi);
   const [showPopularRides, setShowPopularRides] = useState();
   const router = useRouter();
 
   const handleClick = () => {
-    if (JSON.parse(localStorage.getItem('user'))) {
+    if (localStorage.getItem('user')) {
       router.push('/publish_ride')
+    } else {
+      toast.error("Please login to Publish the ride")
+      router.push('/auth/login');
     }
-    toast.error("Please login to Publish the ride")
-    router.push('/auth/login');
   }
   return (
     <>

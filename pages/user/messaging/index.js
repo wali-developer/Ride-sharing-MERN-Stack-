@@ -1,6 +1,6 @@
 import React from 'react';
 import UserLayout from '../../../components/userLayout';
-import Messaging from './Messaging';
+import Messaging from '../../../components/user/Messaging/Messaging';
 
 const Index = () => {
     return (

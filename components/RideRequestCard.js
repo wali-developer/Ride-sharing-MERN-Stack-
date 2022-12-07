@@ -13,14 +13,11 @@ const RideRequestCard = ({
 }) => {
     const [rejectionMessage, setRejectionMessage] = useState("");
     const [openModal, setOpenModal] = useState(false);
-    console.log(ride)
 
     // handle approve ride request
     const handleApprove = async () => {
         try {
-            await API.patch(`/publishride/${ride?.rideId}`, {
-                passenger: passenger - passenger,
-            });
+
             const { data } = await API.patch(
                 `/requestride/${ride?._id}`,
                 {
@@ -33,6 +30,12 @@ const RideRequestCard = ({
             } else {
                 toast(data);
             }
+
+            // Update ride passengers
+            await API.patch(`/publishride/${ride?.rideId}`, {
+                passenger: passenger - passenger,
+            });
+
         } catch (err) {
             console.log(err);
         }
@@ -65,7 +68,7 @@ const RideRequestCard = ({
 
     return (
         <>
-            {ride?.requestStatus === "Pending" && (
+            {ride?.requestStatus == "pending" && (
                 <div className="card text-center mb-4">
                     <div className="card-header" style={{ textAlign: "left" }}>
                         Booking Ride Request from {ride?.goingfrom} to {ride?.goingto}
@@ -75,7 +78,7 @@ const RideRequestCard = ({
                             {ride?.goingfrom} <BsArrowRight /> {ride?.goingto}
                         </h5>
                         <p className="card-text">
-                            User with email <b> {ride?.bookerEmail} </b> has requested to book your ride with <b>{ride?.passenger}</b> passengers on {ride?.bookingDate}, you can either Approve or Disapprove
+                            User <b> {ride?.bookingRider?.fullName} </b> email <b>{ride?.bookingRider?.email}</b> has requested to book your ride with <b>{ride?.passenger}</b> passengers on {ride?.bookingDate}, you can either Approve or Disapprove
                         </p>
                         <div className="d-flex justify-content-between">
                             <button className="btn primaryBtn" onClick={handleApprove}>
@@ -96,7 +99,6 @@ const RideRequestCard = ({
                     </div>
                     <div className="card-footer text-muted">{ride?.bookingDate}</div>
                 </div>
-
             )}
             {/* Rejection modal */}
             <Modal show={openModal} setShow={setOpenModal} className="">

@@ -17,39 +17,22 @@ const SearchedCard = ({
 }) => {
 
     const { searchData, setSearchData } = useContext(SearchRideContext);
-    console.log("Search Data : ", searchData)
+    console.log(rideData)
 
     const router = useRouter();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
-    const [ridePublisher, setRidePublisher] = useState();
     const [openModal, setOpenModal] = useState(false);
 
     const [loader, setLoader] = useState(false);
 
-    const getRidePublisherData = async () => {
-        try {
-            const { data } = await API.get('/user/register');
+    // const addBookerToConversation = async (e) => {
+    //     await API.post('/conversations'), {
+    //         senderId: user?._id,
+    //         receiverId: rideData?.publisherUser?._id,
+    //     };
+    // };
 
-            const ridePublisherData = data?.filter((user) => user?.email === rideData?.email);
-
-            ridePublisherData?.map((user) => setRidePublisher(user));
-            // console.log(ridePublisher?._id);
-
-        } catch (error) {
-            console.log(error);
-        }
-    }
-    useEffect(() => {
-        getRidePublisherData()
-        // console.log(ridePublisher)
-    }, [])
-
-    const addBookerToConversation = async (e) => {
-        await API.post('/conversations'), {
-            senderId: user?._id,
-            receiverId: ridePublisher?.id,
-        };
-    };
+    // const rideData = new Date(rideData?.date);
 
     // Booking Ride...
     const BookRide = async () => {
@@ -64,17 +47,27 @@ const SearchedCard = ({
                     bookingDate: userFormData?.date,
                     rideStatus: rideData?.status,
                     requestStatus: "pending",
-                    bookerEmail: user?.email,
-                    bookerId: user?._id,
-                    publisherId: ridePublisher?._id,
+                    bookingRider: {
+                        _id: user?._id,
+                        fullName: user?.fullName,
+                        email: user?.email,
+                        userType: user?.userType
+                    },
+                    publisherUser: rideData?.publisherUser,
                     rideId: rideData?._id,
                 }
-                const { data } = await API.post('/requestride', payload);
-                addBookerToConversation()
-                toast(data);
-                setTimeout(() => {
-                    router.push('/user/messaging');
-                }, 8000);
+                if (payload?.bookingRider?._id === payload?.publisherUser?._id) {
+                    toast.error('You can not book your own ride')
+                    router.push('/');
+                }
+                else {
+                    const { data } = await API.post('/requestride', payload);
+                    addBookerToConversation();
+                    toast(data);
+                    setTimeout(() => {
+                        router.push('/user/messaging');
+                    }, 1500);
+                }
                 // setLoader(false)
             } catch (error) {
                 // setLoader(true)
@@ -82,10 +75,22 @@ const SearchedCard = ({
             }
             setLoader(false)
             setSearchData({})
-            console.log(searchData);
 
         }
     }
+
+    // console.log("user:", user)
+    // console.log("sender id:", user?._id)
+    // console.log("receiver id:", rideData?.publisherUser?._id)
+    // console.log("receiver:", rideData)
+
+    const addBookerToConversation = async (e) => {
+        const { data } = await API.post("conversations", {
+            senderId: user?._id,
+            receiverId: rideData?.publisherUser?._id,
+        });
+        console.log("Converesation added: ", data);
+    };
 
 
     const handleBook = () => {
@@ -124,7 +129,7 @@ const SearchedCard = ({
                         <p>2hr40</p>
                         <h5>20:40</h5>
                     </div>
-                    <div className="searchCard-content-col col-sm-8 col-md-8">
+                    <div className="searchCard-content-col col-sm-7 col-md-7">
                         <h5>
                             <GrLocation />
                             {rideData?.goingfrom}
@@ -135,13 +140,13 @@ const SearchedCard = ({
                             {rideData?.goingto}
                         </h5>
                     </div>
-                    <p className="price col-sm-2 col-md-2">800 pkr</p>
+                    <p className="price col-sm-3 col-md-3">{rideData?.price} pkr / rider</p>
                 </div>
 
                 <div className="d-flex justify-content-between align-items-end">
                     <div className="cardUser">
                         <FaUserCircle className="userIcon" />
-                        <span>{rideData?.name}</span>
+                        <span>{rideData?.publisherUser?.fullName}</span>
                     </div>
                     <div className="cardDate">
                         <span>{rideData?.date}</span>

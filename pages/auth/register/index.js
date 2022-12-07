@@ -19,23 +19,33 @@ const Register = () => {
     // handle user registration
     const handleRegister = async (e) => {
         e.preventDefault();
+        console.log(formData)
         try {
-            const { data } = await API.post('/user/register', formData);
-            if (data === "User has already Register...") {
-                alert(data, { position: "top-center" });
+            const res = await API.post('/user/register', formData);
+            // if (data === "User has already Register...") {
+            //     alert(data, { position: "top-center" });
+            // } else {
+            //     router.push('/auth/login')
+            // }
+            if (res?.status !== 201) {
+                toast.error(res?.data, { position: 'top-center' })
             } else {
-                router.push('/auth/login')
+                toast(res?.data, { position: 'top-center' })
+                setTimeout(() => {
+                    router.push('/auth/login')
+                }, 1500)
             }
+            console.log(res?.data);
         } catch (err) {
             console.log(err);
+            setFormData({
+                fullName: "",
+                userName: "",
+                email: "",
+                password: "",
+                userType: "",
+            });
         }
-        setFormData({
-            fullName: "",
-            userName: "",
-            email: "",
-            password: "",
-            userType: "",
-        });
         // router.push("/auth/login");
     };
     return (

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { GoSearch } from "react-icons/go";
 import Conversation from "./Conversation";
 import Message from "./Message";
+import axios from "axios";
 import { io } from "socket.io-client";
 import API from "../../../api";
 
@@ -129,7 +130,6 @@ const Messaging = () => {
             </div>
             <div className="connectedRiders">
               {conversations.map((conversation, index) => {
-                console.log("Conversation: ", conversation);
                 return (
                   <div
                     onClick={() => {
@@ -196,8 +196,8 @@ const Messaging = () => {
                 </div>
               </>
             ) : (
-              <span className="EmptyConversation">
-                Open connected Riders conversation to start <br /> a chat
+              <span className="EmptyConversation ">
+                Open connected Riders conversation to start a chat
               </span>
             )}
           </div>

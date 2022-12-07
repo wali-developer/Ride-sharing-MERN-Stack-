@@ -72,6 +72,14 @@ const Aside = () => {
     const handleClick = (index) => {
         setPosition(index + 15 + 52 + "px")
     }
+
+    const logout = () => {
+        const user = localStorage.getItem('user')
+        if (user) {
+            localStorage.removeItem('user');
+            router.push('/');
+        }
+    }
     return (
         <>
             <div
@@ -108,7 +116,7 @@ const Aside = () => {
                         )}
                     </ul>
                     {/* <Animation position={position} /> */}
-                    <div className='' style={{ cursor: 'pointer' }}>
+                    <div className='' style={{ cursor: 'pointer' }} onClick={logout}>
                         <IoCloseOutline className="sidebarMenuIcon" />
                         <span className="ms-4">
                             Logout

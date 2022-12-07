@@ -16,9 +16,9 @@ const Index = () => {
     const [availableRidesData, setAvailableRidesData] = useState([]);
 
 
-    useEffect(() => {
-        searchData?.availableRides?.length < 1 && router.push('/search');
-    }, [searchData])
+    // useEffect(() => {
+    //     searchData?.availableRides?.length < 1 && router.push('/search');
+    // }, [searchData])
 
     useEffect(() => {
         setUserFormData(searchData?.fieldsData)
@@ -53,6 +53,19 @@ const Index = () => {
                             </p>
                             <span> {availableRidesData?.length} rides available</span>
                         </div>
+                        {availableRidesData?.length < 1 && (
+                            <p
+                                style={{
+                                    fontSize: 20,
+                                    color: 'gray',
+                                    textAlign: 'center',
+                                    margin: "40px 0",
+                                    fontWeight: '500'
+                                }}
+                            >
+                                No Rides available for this route
+                            </p>
+                        )}
                         {availableRidesData?.map((ride, index) => {
                             return (
                                 <div key={index}>

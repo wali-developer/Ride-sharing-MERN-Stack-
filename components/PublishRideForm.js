@@ -18,37 +18,60 @@ const PulishRideFormCard = () => {
     const [passenger, setpassenger] = useState(0);
     const [goingfrom, setGoingfrom] = useState("");
     const [goingto, setGoingto] = useState("");
+    const [price, setPrice] = useState("");
     const [date, setDate] = useState("");
     const [status, setStatus] = useState("Inactive");
 
     useEffect(() => {
         // console.log(loginUser?._id) 
-        setLoginUser(JSON.parse(localStorage?.getItem("user")))
+        const userData = JSON.parse(localStorage?.getItem("user"));
+        console.log(userData)
+        setLoginUser(userData);
 
     }, [])
 
     // handle Publish Ride
     const publishRideHandle = async (e) => {
+
         e.preventDefault();
-        setLoading(true);
-        try {
-            const { data } = await API.post("publishride", {
-                goingfrom: goingfrom,
-                goingto: goingto,
-                status: status,
-                passenger: passenger,
-                date: date,
-                ridePublisherId: loginUser?._id,
-                ridePublisheremail: loginUser?.email
-            });
-            if (data) {
-                toast.success(data);
+        const payload = {
+            goingfrom: goingfrom,
+            goingto: goingto,
+            status: status,
+            passenger: passenger,
+            price: price,
+            date: date,
+            publisherUser: {
+                _id: loginUser?._id,
+                fullName: loginUser?.fullName,
+                email: loginUser?.email,
+                userType: loginUser?.userType
             }
-        } catch (err) {
-            console.log(err);
         }
-        setOpenModal(false);
-        setLoading(false);
+        if (!loginUser) {
+            toast.error('Please login first to publish a ride')
+        }
+        else {
+            setLoading(true);
+            console.log("Payload: ", payload)
+            try {
+                const { data } = await API.post("publishride", payload);
+                if (data) {
+                    toast.success(data);
+                    setGoingfrom("");
+                    setGoingto("");
+                    setPrice("");
+                    setDate("");
+                } else {
+                    toast.error('An error occured, please try again')
+                }
+
+            } catch (err) {
+                console.log(err);
+            }
+            setOpenModal(false);
+            setLoading(false);
+        }
     };
 
     const publishRide = async (e) => {
@@ -63,7 +86,7 @@ const PulishRideFormCard = () => {
                 <h5 className="text-center" style={{ fontFamily: 'Poppins' }}>Are you sure to Publish Ride from {goingfrom} to {goingto} on {date} with {passenger}</h5>
                 <div className="d-flex justify-content-between mt-5">
                     <Button variant="secondary" onClick={() => setOpenModal(false)}>Close</Button>
-                    <Button variant="primary" onClick={publishRideHandle}>Book Ride</Button>
+                    <Button variant="primary" onClick={publishRideHandle}>Publish Ride</Button>
                 </div>
             </Modal>
             <div data-aos="fade-left" data-aos-duration="1200" className="user_publish_ride_form">
@@ -93,6 +116,17 @@ const PulishRideFormCard = () => {
                             value={goingto}
                         />
                     </div>
+                    <div className="mb-4 input-group">
+                        <input
+                            type="number"
+                            className="form-control"
+                            placeholder="Price..."
+                            name="price"
+                            required
+                            onChange={(e) => setPrice(e.target.value)}
+                            value={price}
+                        />
+                    </div>
                     <div className="row">
                         <div className="passenger-needed my-4 col-7">
                             <span className="me-3">Passenger Needed:</span>
@@ -106,13 +140,13 @@ const PulishRideFormCard = () => {
                                 onClick={() => setpassenger(passenger > 1 && passenger - 1)}
                             />
                         </div>
-                        <div className="date col-5 mt-2">
+                        <div className=" col-5 mt-2">
                             <input
                                 type="date"
                                 name="date"
                                 required
                                 onChange={(e) => setDate(e.target.value)}
-                                value={date}
+                            // value={date}
                             />
                         </div>
                     </div>
