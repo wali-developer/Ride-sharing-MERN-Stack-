@@ -10,7 +10,6 @@ const Index = () => {
     const router = useRouter();
 
     const { searchData } = useContext(SearchRideContext);
-    console.log("Search Data after user search : ", searchData)
 
     const [userFormData, setUserFormData] = useState({});
     const [availableRidesData, setAvailableRidesData] = useState([]);

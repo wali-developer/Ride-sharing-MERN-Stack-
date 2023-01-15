@@ -12,6 +12,7 @@ const AdminProfile = () => {
         userName: "",
         email: "",
         password: "",
+        userType: "admin"
     });
     const [loading, setLoading] = useState(false);
     useEffect(() => {

@@ -68,7 +68,7 @@ const RideRequestCard = ({
 
     return (
         <>
-            {ride?.requestStatus == "pending" && (
+            {ride?.requestStatus == "Pending" && (
                 <div className="card text-center mb-4">
                     <div className="card-header" style={{ textAlign: "left" }}>
                         Booking Ride Request from {ride?.goingfrom} to {ride?.goingto}

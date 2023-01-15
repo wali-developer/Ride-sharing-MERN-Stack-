@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import AOS from "aos";
 
 const SearchedCard = ({
-  index,
   goingfrom,
   goingto,
   name,
@@ -40,11 +39,6 @@ const SearchedCard = ({
     }
   };
 
-  // initialize animation library
-  useEffect(() => {
-    AOS.init();
-    AOS.refresh();
-  }, []);
   return (
     <div
       className="searchCard"
@@ -52,7 +46,7 @@ const SearchedCard = ({
       data-aos-duration="1200"
     >
       <p className="text-center">
-        <strong style={{ color: "#4F56FF" }}>{"2"}</strong> Passenger
+        <strong style={{ color: "#4F56FF" }}>{passenger}</strong> Passenger
         Needed for ride
       </p>
       <div className="searchCard-content row">
@@ -84,16 +78,16 @@ const SearchedCard = ({
           <span>{date}</span>
         </div>
       </div>
-      <div className="my-2 mt-3 d-flex justify-content-between">
+      <div className="my-2 mt-3 d-flex justify-content-end">
         <button className="btn primaryBtn" disabled>
           {"Active"}
         </button>
-        <button
+        {/* <button
           className="btn primaryBtn"
         // onClick={handleBook}
         >
           Book Now
-        </button>
+        </button> */}
       </div>
     </div>
   );

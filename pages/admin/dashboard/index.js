@@ -6,6 +6,7 @@ import { Row, Col } from 'react-bootstrap';
 import AdminLayout from '../../../components/adminLayout';
 import RideStatisticsCard from "../../../components/RideStatisticsCard";
 import RideRequestCard from "../../../components/RideRequestCard";
+import InactiveRide from "../../../components/admin/InactiveRide";
 
 const AdminDashboard = () => {
     const [ridersLength, setRidersLength] = useState(0);
@@ -157,19 +158,27 @@ const AdminDashboard = () => {
                         })}
                     </div>
                     <div className="row mt-5">
-                        {[0, 1, 2].map((ride, index) => {
+                        {inactiveRides.map((ride) => {
+                            const {
+                                _id,
+                                goingfrom,
+                                goingto,
+                                name,
+                                passenger,
+                                date,
+                                email,
+                            } = ride;
                             return (
-                                <div className="col-12 col-md-6" key={index}>
-                                    <RideRequestCard
-                                        id={84578475}
-                                        goingfrom={"Karachi"}
-                                        goingto={"Lahore"}
-                                        name={"Hamad khan"}
-                                        passenger={3}
-                                        date={'23 Aug, 2022'}
-                                        email={'hamad@netchainmedia.com'}
-                                    />
-                                </div>
+                                <InactiveRide
+                                    id={_id}
+                                    goingfrom={goingfrom}
+                                    goingto={goingto}
+                                    name={ride?.publisherUser?.fullName}
+                                    passenger={passenger}
+                                    date={date}
+                                    email={ride?.publisherUser?.email}
+                                    getRidesStatistics={getRidesStatistics}
+                                />
                             );
                         })}
                     </div>

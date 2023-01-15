@@ -34,11 +34,12 @@ const Rides = () => {
                         {rides?.map((ride, index) => {
                             return (
                                 <LatestRides
-                                    key={index}
+                                    key={index + ""}
+                                    passenger={ride?.passenger}
                                     goingfrom={ride?.goingfrom}
                                     goingto={ride?.goingto}
                                     date={ride?.date}
-                                    name={ride?.email}
+                                    name={ride?.publisherUser?.fullName}
                                 />
                             );
                         })}

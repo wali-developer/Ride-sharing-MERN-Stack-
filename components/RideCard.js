@@ -68,9 +68,7 @@ const SearchedCard = ({
                         router.push('/user/messaging');
                     }, 1500);
                 }
-                // setLoader(false)
             } catch (error) {
-                // setLoader(true)
                 console.log(error)
             }
             setLoader(false)
@@ -78,11 +76,6 @@ const SearchedCard = ({
 
         }
     }
-
-    // console.log("user:", user)
-    // console.log("sender id:", user?._id)
-    // console.log("receiver id:", rideData?.publisherUser?._id)
-    // console.log("receiver:", rideData)
 
     const addBookerToConversation = async (e) => {
         const { data } = await API.post("conversations", {
